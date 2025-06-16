@@ -2,132 +2,212 @@
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8" />
-    <title>整理券配布ページ</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <title>ゲームセンター整理券配布</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: #f0f4f8;
+            background: linear-gradient(to right, #f8f8ff, #e0f7fa);
             margin: 0;
-            padding: 20px;
+            padding: 40px 20px;
             color: #333;
+            font-size: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         h1 {
             text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            font-size: 42px;
+            color: #00796b;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
         }
 
-        #buttons {
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            justify-items: center;
+        }
+
+        .game-card {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            transition: transform 0.3s ease;
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 320px;
         }
 
-        .game-block {
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        .game-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .game-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
             padding: 20px;
-            width: 220px;
             text-align: center;
-            transition: transform 0.2s;
         }
 
-        .game-block:hover {
-            transform: translateY(-4px);
+        .game-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00796b;
+            margin-bottom: 15px;
         }
 
-        .game-block button {
-            background: #00796b;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            margin-bottom: 10px;
-        }
-
-        .game-block button:hover {
-            background: #00695c;
-        }
-
-        .description,
-        .waiting-count {
-            font-size: 0.95rem;
+        .description {
             color: #555;
-            margin-top: 5px;
+            font-size: 18px;
+            margin-bottom: 15px;
         }
 
-        .admin-login,
-        #adminPanel {
-            margin-top: 40px;
-            padding: 20px;
-            background: #fff;
+        .waiting-count {
+            font-size: 20px;
+            color: #e53935;
+            margin-bottom: 20px;
+        }
+
+        .get-button {
+            padding: 14px 24px;
+            font-size: 18px;
+            border: none;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+            background-color: #4caf50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 80%;
+            margin: 0 auto 20px auto;
+            display: block;
+        }
+
+        .get-button:hover {
+            background-color: #388e3c;
+        }
+
+        .admin-login {
+            text-align: center;
+            margin-top: 60px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .admin-login h3 {
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        #passwordInput {
+            padding: 14px;
+            font-size: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .login-button {
+            padding: 12px 24px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            background-color: #00796b;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-button:hover {
+            background-color: #005f50;
+        }
+
+        #adminPanel {
+            margin: 40px auto 0 auto;
+            background: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 15px;
+            padding: 30px;
             max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            display: none;
             text-align: center;
         }
 
-        .admin-login input {
-            padding: 10px;
-            font-size: 1rem;
-            margin-right: 10px;
+        #adminPanel h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #00796b;
         }
 
-        .admin-login button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            background: #0288d1;
+        #adminView p {
+            font-size: 20px;
+            margin: 8px 0;
+        }
+
+        .reset-button {
+            margin-top: 20px;
+            padding: 14px 24px;
+            font-size: 20px;
+            background-color: #e53935;
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 10px;
             cursor: pointer;
         }
 
-        #adminPanel button {
-            margin-top: 20px;
+        .reset-button:hover {
+            background-color: #c62828;
         }
 
-        .ticket-list {
-            margin-top: 10px;
-            max-height: 200px;
-            overflow-y: auto;
-            border: 1px solid #ccc;
-            padding: 10px;
-            background: #f9f9f9;
-            border-radius: 8px;
-        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 32px;
+            }
 
-        .ticket-list label {
-            display: block;
-            font-size: 16px;
-            margin-bottom: 4px;
+            .game-card img {
+                height: 160px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <h1>ゲームセンター<br />整理券配布</h1>
-    <div id="buttons"></div>
+    <h1>ゲームセンター整理券配布</h1>
+
+    <div class="container" id="buttons"></div>
 
     <div class="admin-login">
         <h3>管理者ログイン</h3>
-        <input type="password" id="passwordInput" placeholder="パスワードを入力" />
-        <button onclick="loginAdmin()">ログイン</button>
+        <input type="password" id="passwordInput" placeholder="パスワードを入力">
+        <br>
+        <button class="login-button" onclick="loginAdmin()">ログイン</button>
     </div>
 
-    <div id="adminPanel" style="display:none;">
+    <div id="adminPanel">
         <h2>管理者ビュー</h2>
         <div id="adminView"></div>
-        <button style="background-color: #e53935; color: white;" onclick="resetTickets()">全整理券をリセット</button>
+        <button class="reset-button" onclick="resetTickets()">全整理券をリセット</button>
     </div>
 
     <script>
@@ -136,7 +216,15 @@
             game2: "燃えよPizzas",
             game3: "fallingslime",
             game4: "PanicStation",
-            game5: "へんけいマシンひとりたび",
+            game5: "へんけいマシンひとりたび"
+        };
+
+        const gameImages = {
+            game1: "girlsX.png",
+            game2: "pizza.png",
+            game3: "falling.png",
+            game4: "Panic.png",
+            game5: "へんけい.png"
         };
 
         let ticketData = {
@@ -144,139 +232,98 @@
             game2: [],
             game3: [],
             game4: [],
-            game5: [],
-        };
-
-        let usedTickets = {
-            game1: new Set(),
-            game2: new Set(),
-            game3: new Set(),
-            game4: new Set(),
-            game5: new Set(),
+            game5: []
         };
 
         function getTicket(gameId) {
+            if (!ticketData[gameId]) {
+                alert("無効なゲームIDです。");
+                return;
+            }
+
+            if (localStorage.getItem('hasTicket') === 'true') {
+                alert("すでに整理券を取得しています。");
+                return;
+            }
+
             const ticketNumber = ticketData[gameId].length + 1;
             ticketData[gameId].push(ticketNumber);
 
-            const newWindow = window.open("", "_blank");
-            newWindow.document.write(`
-        <html lang="ja">
-        <head><meta charset="UTF-8" /><title>整理券番号</title>
-          <style>
-            body {
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-              height: 100vh;
-              margin: 0;
-              font-family: 'Segoe UI', sans-serif;
-              background: #e0f7fa;
-              color: #00796b;
-              text-align: center;
-              padding: 20px;
-            }
-            h1 {
-              font-size: 6rem;
-              margin-bottom: 20px;
-            }
-            p {
-              font-size: 2rem;
-              margin-top: 0;
-            }
-          </style>
-        </head>
-        <body>
-          <h1>整理券番号<br /><strong>${ticketNumber}</strong></h1>
-          <p>スクリーンショットをして遊ぶ際に<br />近くのスタッフに見せてください</p>
-        </body>
-        </html>
-      `);
-            newWindow.document.close();
+            localStorage.setItem('hasTicket', 'true');
+            localStorage.setItem('ticketGame', gameTitles[gameId]);
+            localStorage.setItem('ticketNumber', ticketNumber.toString());
 
-            updateUserView();
-            updateAdminView();
+            updateAllViews();
+
+            window.location.href = "ticket.html";
         }
 
         function updateAdminView() {
             const adminDiv = document.getElementById("adminView");
             adminDiv.innerHTML = "";
-
-            let totalWaiting = 0;
-
+            let total = 0;
             for (const game in ticketData) {
-                const waitingCount = ticketData[game].filter(num => !usedTickets[game].has(num)).length;
-                totalWaiting += waitingCount;
+                const count = ticketData[game].length;
+                total += count;
+                adminDiv.innerHTML += `<p><strong>${gameTitles[game]}</strong>: ${count}人</p>`;
+            }
+            adminDiv.innerHTML += `<p><strong>合計</strong>: ${total}人</p>`;
+        }
 
-                adminDiv.innerHTML += `<p><strong>${gameTitles[game]}</strong> - 待ち人数: ${waitingCount}人</p>`;
-
-                if (ticketData[game].length > 0) {
-                    const ticketListHTML = ticketData[game]
-                        .map((num) => {
-                            const checked = usedTickets[game].has(num) ? "checked" : "";
-                            return `
-                <label>
-                  <input type="checkbox" onchange="toggleUsedTicket('${game}', ${num}, this.checked)" ${checked}>
-                  整理券番号 ${num} ${checked ? '(処理済み)' : ''}
-                </label>
-              `;
-                        })
-                        .join("");
-                    adminDiv.innerHTML += `<div class="ticket-list">${ticketListHTML}</div>`;
-                } else {
-                    adminDiv.innerHTML += `<p>発行された整理券はありません。</p>`;
+        function updateWaitingCounts() {
+            for (const game in ticketData) {
+                const count = ticketData[game].length;
+                const waitingDiv = document.getElementById(`waiting-${game}`);
+                if (waitingDiv) {
+                    waitingDiv.textContent = `現在の待ち人数: ${count}人`;
                 }
             }
-
-            adminDiv.innerHTML += `<p><strong>合計 待ち人数:</strong> ${totalWaiting}人</p>`;
         }
 
-        function toggleUsedTicket(gameId, ticketNum, isChecked) {
-            if (isChecked) {
-                usedTickets[gameId].add(ticketNum);
-            } else {
-                usedTickets[gameId].delete(ticketNum);
-            }
+        function updateAllViews() {
             updateAdminView();
-            updateUserView();
-        }
-
-        function updateUserView() {
-            for (let i = 1; i <= 5; i++) {
-                const gameId = `game${i}`;
-                const block = document.getElementById(`block-${gameId}`);
-                const waitingDiv = block.querySelector(".waiting-count");
-                const waiting = ticketData[gameId].filter(num => !usedTickets[gameId].has(num)).length;
-                waitingDiv.textContent = `現在の待ち人数: ${waiting}人`;
-            }
+            updateWaitingCounts();
         }
 
         function setupButtons() {
             const buttonsDiv = document.getElementById("buttons");
-            buttonsDiv.innerHTML = "";
             for (let i = 1; i <= 5; i++) {
                 const gameId = `game${i}`;
-                const block = document.createElement("div");
-                block.className = "game-block";
-                block.id = `block-${gameId}`;
+                const card = document.createElement("div");
+                card.className = "game-card";
 
-                const btn = document.createElement("button");
-                btn.textContent = `${gameTitles[gameId]}`;
-                btn.onclick = () => getTicket(gameId);
+                const img = document.createElement("img");
+                img.src = gameImages[gameId];
+                img.alt = gameTitles[gameId];
+                card.appendChild(img);
+
+                const content = document.createElement("div");
+                content.className = "card-content";
+
+                const title = document.createElement("div");
+                title.className = "game-title";
+                title.textContent = gameTitles[gameId];
+                content.appendChild(title);
 
                 const desc = document.createElement("div");
                 desc.className = "description";
-                desc.textContent = "説明文";
+                desc.textContent = "こちらは「" + gameTitles[gameId] + "」の整理券です。";
+                content.appendChild(desc);
 
                 const waiting = document.createElement("div");
                 waiting.className = "waiting-count";
+                waiting.id = `waiting-${gameId}`;
                 waiting.textContent = "現在の待ち人数: 0人";
+                content.appendChild(waiting);
 
-                block.appendChild(btn);
-                block.appendChild(desc);
-                block.appendChild(waiting);
-                buttonsDiv.appendChild(block);
+                const button = document.createElement("button");
+                button.className = "get-button";
+                button.textContent = "整理券を取得";
+                button.onclick = () => getTicket(gameId);
+                content.appendChild(button);
+
+                card.appendChild(content);
+                buttonsDiv.appendChild(card);
             }
         }
 
@@ -284,10 +331,11 @@
             if (confirm("本当にすべての整理券をリセットしますか？")) {
                 for (const game in ticketData) {
                     ticketData[game] = [];
-                    usedTickets[game].clear();
                 }
-                updateAdminView();
-                updateUserView();
+                localStorage.removeItem('hasTicket');
+                localStorage.removeItem('ticketGame');
+                localStorage.removeItem('ticketNumber');
+                updateAllViews();
             }
         }
 
@@ -295,13 +343,13 @@
             const password = document.getElementById("passwordInput").value;
             if (password === "oecugame") {
                 document.getElementById("adminPanel").style.display = "block";
-                updateAdminView();
             } else {
                 alert("パスワードが間違っています。");
             }
         }
 
         setupButtons();
+        updateAllViews();
     </script>
 </body>
 
