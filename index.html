@@ -2,9 +2,9 @@
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
-    <title>ゲームセンター整理券配布</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <title>整理券配布ページ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
         *,
         *::before,
@@ -14,10 +14,9 @@
 
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(to right, #f8f8ff, #e0f7fa);
-            margin: 0;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
             padding: 40px 20px;
-            color: #333;
+            color: #fff;
             font-size: 18px;
             display: flex;
             flex-direction: column;
@@ -26,188 +25,153 @@
 
         h1 {
             text-align: center;
-            margin-bottom: 40px;
-            font-size: 42px;
-            color: #00796b;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            font-size: 36px;
+            color: #00ffe0;
+            text-shadow: 1px 1px 3px #000;
         }
 
-        .container {
+        h3 {
+            font-size: 24px;
+            color: #00ffe0;
+            margin-bottom: 12px;
+        }
+
+        .game-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
+            gap: 24px;
             width: 100%;
-            justify-items: center;
+            max-width: 1024px;
         }
 
-        .game-card {
-            background: #fff;
-            border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 100%;
-            max-width: 320px;
-        }
-
-        .game-card:hover {
-            transform: translateY(-8px);
-        }
-
-        .game-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .card-content {
+        .game-block {
+            background: #1e2a38;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0, 255, 255, 0.3);
             padding: 20px;
             text-align: center;
+            transition: transform 0.3s;
         }
 
-        .game-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #00796b;
-            margin-bottom: 15px;
+        .game-block:hover {
+            transform: scale(1.03);
         }
 
-        .description {
-            color: #555;
-            font-size: 18px;
-            margin-bottom: 15px;
+        .game-block img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 12px;
         }
 
-        .waiting-count {
-            font-size: 20px;
-            color: #e53935;
-            margin-bottom: 20px;
-        }
-
-        .get-button {
-            padding: 14px 24px;
+        button {
+            margin-top: 12px;
+            padding: 14px;
             font-size: 18px;
             border: none;
-            border-radius: 10px;
-            background-color: #4caf50;
-            color: white;
+            border-radius: 8px;
+            background-color: #00c9a7;
+            color: #000;
+            font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s;
-            width: 80%;
-            margin: 0 auto 20px auto;
-            display: block;
-        }
-
-        .get-button:hover {
-            background-color: #388e3c;
-        }
-
-        .admin-login {
-            text-align: center;
-            margin-top: 60px;
             width: 100%;
-            max-width: 400px;
         }
 
-        .admin-login h3 {
-            font-size: 26px;
-            margin-bottom: 20px;
+        button:hover {
+            background-color: #00a98e;
+        }
+
+        .wait-count {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .admin-login,
+        #adminPanel {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 40px;
+            background: #1e2a38;
+            border: 1px solid #00c9a7;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 12px rgba(0, 255, 255, 0.2);
         }
 
         #passwordInput {
-            padding: 14px;
-            font-size: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            width: 100%;
-            margin-bottom: 15px;
-        }
-
-        .login-button {
-            padding: 12px 24px;
+            margin-bottom: 12px;
+            padding: 12px;
             font-size: 18px;
-            border: none;
-            border-radius: 10px;
-            background-color: #00796b;
-            color: white;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .login-button:hover {
-            background-color: #005f50;
-        }
-
-        #adminPanel {
-            margin: 40px auto 0 auto;
-            background: #ffffff;
             border: 1px solid #ccc;
-            border-radius: 15px;
-            padding: 30px;
-            max-width: 600px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            display: none;
-            text-align: center;
+            border-radius: 6px;
+            width: 100%;
         }
 
-        #adminPanel h2 {
-            font-size: 28px;
-            margin-bottom: 20px;
-            color: #00796b;
+        .ticket-list {
+            margin-top: 10px;
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background: #2c3e50;
+            border-radius: 8px;
         }
 
-        #adminView p {
-            font-size: 20px;
-            margin: 8px 0;
-        }
-
-        .reset-button {
-            margin-top: 20px;
-            padding: 14px 24px;
-            font-size: 20px;
-            background-color: #e53935;
-            color: white;
-            border: none;
-            border-radius: 10px;
+        .ticket-list label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 6px;
             cursor: pointer;
-        }
-
-        .reset-button:hover {
-            background-color: #c62828;
         }
 
         @media (max-width: 600px) {
             h1 {
-                font-size: 32px;
+                font-size: 28px;
             }
 
-            .game-card img {
-                height: 160px;
+            h3 {
+                font-size: 20px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            .wait-count {
+                font-size: 14px;
+            }
+
+            #passwordInput {
+                font-size: 16px;
+            }
+
+            .game-block img {
+                height: 140px;
             }
         }
     </style>
 </head>
 
 <body>
-    <h1>ゲームセンター整理券配布</h1>
-
-    <div class="container" id="buttons"></div>
+    <h1>ゲームセンター<br />整理券配布</h1>
+    <div id="buttons" class="game-grid"></div>
 
     <div class="admin-login">
         <h3>管理者ログイン</h3>
-        <input type="password" id="passwordInput" placeholder="パスワードを入力">
-        <br>
-        <button class="login-button" onclick="loginAdmin()">ログイン</button>
+        <input type="password" id="passwordInput" placeholder="パスワードを入力" />
+        <button onclick="loginAdmin()">ログイン</button>
     </div>
 
-    <div id="adminPanel">
+    <div id="adminPanel" style="display: none;">
         <h2>管理者ビュー</h2>
         <div id="adminView"></div>
-        <button class="reset-button" onclick="resetTickets()">全整理券をリセット</button>
+        <button style="background-color: #e53935; margin-top: 12px;" onclick="resetTickets()">全整理券をリセット</button>
     </div>
 
     <script>
@@ -216,140 +180,104 @@
             game2: "燃えよPizzas",
             game3: "fallingslime",
             game4: "PanicStation",
-            game5: "へんけいマシンひとりたび"
+            game5: "へんけいマシンひとりたび",
         };
 
         const gameImages = {
             game1: "girlsX.png",
             game2: "pizza.png",
-            game3: "falling.png",
+            game3: "Falling.png",
             game4: "Panic.png",
-            game5: "へんけい.png"
+            game5: "へんけい.png",
         };
 
         let ticketData = {
-            game1: [],
-            game2: [],
-            game3: [],
-            game4: [],
-            game5: []
+            game1: [], game2: [], game3: [], game4: [], game5: []
+        };
+        let usedTickets = {
+            game1: new Set(), game2: new Set(), game3: new Set(), game4: new Set(), game5: new Set()
         };
 
         function getTicket(gameId) {
-            if (!ticketData[gameId]) {
-                alert("無効なゲームIDです。");
-                return;
-            }
-
-            if (localStorage.getItem('hasTicket') === 'true') {
-                alert("すでに整理券を取得しています。");
-                return;
-            }
-
             const ticketNumber = ticketData[gameId].length + 1;
             ticketData[gameId].push(ticketNumber);
 
-            localStorage.setItem('hasTicket', 'true');
-            localStorage.setItem('ticketGame', gameTitles[gameId]);
-            localStorage.setItem('ticketNumber', ticketNumber.toString());
+            const win = window.open("", "_blank");
+            win.document.write(`<html><head><meta charset='UTF-8'><title>整理券</title><meta name='viewport' content='width=device-width, initial-scale=1.0'><style>body{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;font-family:'Segoe UI';margin:0;background:#0f2027;color:#00ffe0;text-align:center;}h1{font-size:5rem;}p{font-size:1.5rem;}</style></head><body><h1>整理券番号<br>${ticketNumber}</h1><p>スクリーンショットしてスタッフに見せてください</p></body></html>`);
+            win.document.close();
 
-            updateAllViews();
-
-            window.location.href = "ticket.html";
-        }
-
-        function updateAdminView() {
-            const adminDiv = document.getElementById("adminView");
-            adminDiv.innerHTML = "";
-            let total = 0;
-            for (const game in ticketData) {
-                const count = ticketData[game].length;
-                total += count;
-                adminDiv.innerHTML += `<p><strong>${gameTitles[game]}</strong>: ${count}人</p>`;
-            }
-            adminDiv.innerHTML += `<p><strong>合計</strong>: ${total}人</p>`;
-        }
-
-        function updateWaitingCounts() {
-            for (const game in ticketData) {
-                const count = ticketData[game].length;
-                const waitingDiv = document.getElementById(`waiting-${game}`);
-                if (waitingDiv) {
-                    waitingDiv.textContent = `現在の待ち人数: ${count}人`;
-                }
-            }
-        }
-
-        function updateAllViews() {
             updateAdminView();
-            updateWaitingCounts();
+            updateWaitingDisplays();
         }
 
-        function setupButtons() {
-            const buttonsDiv = document.getElementById("buttons");
-            for (let i = 1; i <= 5; i++) {
-                const gameId = `game${i}`;
-                const card = document.createElement("div");
-                card.className = "game-card";
-
-                const img = document.createElement("img");
-                img.src = gameImages[gameId];
-                img.alt = gameTitles[gameId];
-                card.appendChild(img);
-
-                const content = document.createElement("div");
-                content.className = "card-content";
-
-                const title = document.createElement("div");
-                title.className = "game-title";
-                title.textContent = gameTitles[gameId];
-                content.appendChild(title);
-
-                const desc = document.createElement("div");
-                desc.className = "description";
-                desc.textContent = "こちらは「" + gameTitles[gameId] + "」の整理券です。";
-                content.appendChild(desc);
-
-                const waiting = document.createElement("div");
-                waiting.className = "waiting-count";
-                waiting.id = `waiting-${gameId}`;
-                waiting.textContent = "現在の待ち人数: 0人";
-                content.appendChild(waiting);
-
-                const button = document.createElement("button");
-                button.className = "get-button";
-                button.textContent = "整理券を取得";
-                button.onclick = () => getTicket(gameId);
-                content.appendChild(button);
-
-                card.appendChild(content);
-                buttonsDiv.appendChild(card);
-            }
-        }
-
-        function resetTickets() {
-            if (confirm("本当にすべての整理券をリセットしますか？")) {
-                for (const game in ticketData) {
-                    ticketData[game] = [];
-                }
-                localStorage.removeItem('hasTicket');
-                localStorage.removeItem('ticketGame');
-                localStorage.removeItem('ticketNumber');
-                updateAllViews();
-            }
+        function toggleUsedTicket(game, number, checked) {
+            if (checked) usedTickets[game].add(number);
+            else usedTickets[game].delete(number);
+            updateAdminView();
+            updateWaitingDisplays();
         }
 
         function loginAdmin() {
-            const password = document.getElementById("passwordInput").value;
-            if (password === "oecugame") {
+            const pw = document.getElementById("passwordInput").value;
+            if (pw === "oecugame") {
                 document.getElementById("adminPanel").style.display = "block";
             } else {
                 alert("パスワードが間違っています。");
             }
         }
 
-        setupButtons();
-        updateAllViews();
+        function resetTickets() {
+            for (const k in ticketData) {
+                ticketData[k] = [];
+                usedTickets[k] = new Set();
+            }
+            updateAdminView();
+            updateWaitingDisplays();
+        }
+
+        function updateAdminView() {
+            const adminDiv = document.getElementById("adminView");
+            adminDiv.innerHTML = "";
+            for (const game in ticketData) {
+                const waiting = ticketData[game].filter(n => !usedTickets[game].has(n)).length;
+                adminDiv.innerHTML += `<p><strong>${gameTitles[game]}</strong> - 待ち人数: ${waiting}人</p>`;
+
+                if (ticketData[game].length > 0) {
+                    const list = ticketData[game].map(n => {
+                        const ch = usedTickets[game].has(n) ? 'checked' : '';
+                        return `<label><input type='checkbox' onchange="toggleUsedTicket('${game}', ${n}, this.checked)" ${ch}> 整理券番号 ${n}</label>`;
+                    }).join("");
+                    adminDiv.innerHTML += `<div class='ticket-list'>${list}</div>`;
+                }
+            }
+        }
+
+        function updateWaitingDisplays() {
+            for (const game in gameTitles) {
+                const el = document.getElementById(`${game}-wait`);
+                if (el) {
+                    const count = ticketData[game].filter(n => !usedTickets[game].has(n)).length;
+                    el.textContent = `待ち人数: ${count}人`;
+                }
+            }
+        }
+
+        function createGameButtons() {
+            const container = document.getElementById("buttons");
+            for (const gameId in gameTitles) {
+                const div = document.createElement("div");
+                div.className = "game-block";
+                div.innerHTML = `
+                    <img src="${gameImages[gameId]}" alt="${gameTitles[gameId]}">
+                    <h3>${gameTitles[gameId]}</h3>
+                    <button onclick="getTicket('${gameId}')">整理券を取得</button>
+                    <p class="wait-count" id="${gameId}-wait">待ち人数: 0人</p>
+                `;
+                container.appendChild(div);
+            }
+        }
+
+        createGameButtons();
     </script>
 </body>
 
