@@ -205,7 +205,7 @@
             ticketData[gameId].push(ticketNumber);
 
             const win = window.open("", "_blank");
-            win.document.write(`<html><head><meta charset='UTF-8'><title>整理券</title><meta name='viewport' content='width=device-width, initial-scale=1.0'><style>body{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;font-family:'Segoe UI';margin:0;background:#0f2027;color:#00ffe0;text-align:center;}h1{font-size:5rem;}p{font-size:1.5rem;}</style></head><body><h1>整理券番号<br>${ticketNumber}</h1><p>スクリーンショットしてスタッフに見せてください</p></body></html>`);
+            win.document.write(`<html><head><meta charset='UTF-8'><title>整理券</title><meta name='viewport' content='width=device-width, initial-scale=1.0'><style>body{display:flex;flex-direction:column;justify-content:center;align-items:center;height:100vh;font-family:'Segoe UI';margin:0;background:#0f2027;color:#00ffe0;text-align:center;}h1{font-size:5rem;}p{font-size:1.5rem;}</style></head><body><h1>整理券番号<br>${ticketNumber}</h1><p>写真を撮ってスタッフに見せてください</p></body></html>`);
             win.document.close();
 
             updateAdminView();
